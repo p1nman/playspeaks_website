@@ -1,0 +1,322 @@
+/* Centralized site styles (source of truth for all pages) */
+
+:root{
+  --page-max: 1800px;
+  --content-max: 1400px;
+  --card-max: 1400px;
+  --gutter: 2rem;
+  --inner-gap: 5px;
+  --accent-blue: #2563eb;
+  --accent-dark: #1e40af;
+  --accent: #a8d5ba;
+  --muted: #334155;
+  --text: #0f172a;
+  --soft-bg: #ffffff;
+  --card-shadow: 0 6px 18px rgba(30,64,175,0.04);
+
+  /* header controls */
+  --header-height: 64px;
+  --header-bg-opaque: rgba(0, 0, 0, 0.856);
+  --header-bg-transparent: rgba(0, 0, 0, 0.491);
+}
+
+/* Reset / base */
+*{ box-sizing: border-box; margin:0; padding:0; }
+html, body { height: 100%; }
+body {
+  background-image: url('images/mountain_background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  font-family: 'Georgia', serif;
+  color: #ffffff;
+  line-height: 1.8;
+
+  /* reserve space so fixed header doesn't cover content */
+  padding-top: var(--header-height);
+}
+
+/* Header / top banner */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+  background: var(--header-bg-transparent);
+  color: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: background-color 180ms ease, box-shadow 180ms ease, transform 120ms ease;
+  z-index: 1200;
+
+  /* keep these two lines together and complete to avoid linter warnings */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  /* optional: promote to its own layer for smoother animations */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+header h1 {
+    font-size: 1.25rem;
+    margin: 0;
+    color: var(--accent);
+    font-weight: normal;
+}
+
+/* darken header when page is scrolled (JS toggles .scrolled) */
+header.scrolled {
+  background: var(--header-bg-opaque);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  backdrop-filter: none; /* ensure opaque on browsers that support backdrop-filter */
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: color 0.3s;
+    padding:.25rem .6rem;
+    border-radius:6px;
+    background:transparent;
+}
+nav a[aria-current="page"]{outline:2px solid #a8d5ba;}
+
+nav a:hover,
+nav a:focus {
+  background: #a8d5ba;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Optional hero (index page) */
+        .hero {
+            padding: 3rem 1.5rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+
+        .hero-content p.subtitle {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .hero-content .content {
+            text-align: left;
+            font-size: 1.1rem;
+            color: #ffffff;
+        }
+
+        .hero-content .content p {
+            margin-bottom: 1.2rem;
+        }
+
+        blockquote {
+            margin: 1.5rem 0;
+            padding: 1.2rem;
+            background: #506558;
+            border-left: 4px solid #a8d5ba;
+            border-radius: 6px;
+            font-style: italic;
+            color: #ffffff;
+        }
+
+/* Page container: start wide and shrink */
+.container {
+  width: min(var(--content-max), calc(100vw - 2 * var(--gutter)));
+  max-width: var(--content-max);
+  margin: 2rem auto;
+  /* add generous padding so .container-inner sits inset */
+  padding: calc(var(--gutter)) calc(var(--gutter) + 1rem);
+  box-sizing: border-box;
+
+  /* visible border so the container edge is obvious */
+  border: 1px solid rgba(15, 23, 42, 0);
+  border-radius: 8px;
+  /* subtle background so container edge is readable on white pages */
+  background: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+/* inner content intentionally narrower than the container */
+.container-inner {
+  width: 100%;
+  /* make inner narrower than container by subtracting --inner-gap */
+  max-width: calc(var(--content-max) - var(--inner-gap));
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  /* keep inner visually distinct (transparent so container border remains visible) */
+  background: transparent;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+/* Titles and lead text */
+.page-title { text-align:center; color:var(--accent); font-size:2rem; margin-bottom:.5rem; }
+.lead { text-align:center; color:var(--muted); font-weight:600; margin-bottom:1rem; }
+
+/* Cards / content panels */
+.card {
+  background: #282828c3;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid rgba(46, 46, 46, 0);
+  text-align: center;
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+}
+.section-title { color: var(--accent); margin: 0 0 .5rem 0; font-size:1.1rem; }
+
+/* Sub-cards (used under Counseling) */
+.subcard {
+  background: linear-gradient(180deg, rgba(252, 252, 252, 0.313), #ffffff);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  border-left: 4px solid var(--accent);
+  text-align: left;
+  color: var(--text)
+}
+
+/* Services grid (if used) */
+.services {
+  display:flex;
+  flex-wrap:wrap;
+  gap: 1.5rem;
+  justify-content:center;
+  padding: 1.5rem 0;
+}
+
+/* Generic card used in services grid */
+.card.small {
+  max-width: 320px;
+  width: 100%;
+  text-align: left;
+}
+
+/* Lists and notes */
+.list { margin: .75rem 0 1rem 1.25rem; color: var(--text); }
+.fees-list { margin: .75rem 0 1rem 1.25rem; color: var(--text); }
+.note { margin: .75rem 0 1rem 1.25rem; color: var(--text); }
+
+/* Good Faith Estimate panel */
+.gfe { background: rgba(168,213,186,0.06); padding: 1rem; border-radius: 6px; margin-top: .75rem; color: #083049; }
+
+/* Footer / bottom banner */
+footer {
+  background: #0f172a;             /* dark, high-contrast background */
+  color: #e6eef8;                  /* light text for good contrast */
+  text-align: center;
+  padding: 1.25rem 1rem;
+  margin-top: auto;
+  width: 100%;
+}
+
+/* ensure links in footer meet contrast and focus requirements */
+footer a {
+  color: #93c5fd;                  /* light blue with good contrast on dark bg */
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+footer a:hover,
+footer a:focus {
+  color: #ffffff;
+  outline: 3px solid rgba(255,255,255,0.12);
+  outline-offset: 2px;
+}
+
+/* images row stays visible on dark bg */
+.links-row img {
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  background: #fff;                /* small white background ensures image visibility */
+  padding: 4px;
+}
+
+/* small screens — keep spacing readable */
+@media (max-width: 480px) {
+  footer { padding: 1rem; }
+  footer a { font-size: 0.95rem; }
+}
+
+/* Responsive adjustments: shrink content width as viewport narrows */
+@media (max-width: 1400px) {
+  :root { --inner-gap: 80px; --content-max: 1200px; }
+}
+@media (max-width: 1100px) {
+  :root { --inner-gap: 40px; --content-max: 920px; }
+  .container { padding-left: 1rem; padding-right: 1rem; }
+}
+@media (max-width: 800px) {
+  :root { --inner-gap: 16px; --content-max: 96vw; }
+
+  /* push container full-bleed on small devices */
+  .container {
+    width: 100vw;
+    max-width: 100vw;
+    margin: 0;           /* remove horizontal margins so it touches viewport edges */
+    padding: 0;          /* remove internal gutters */
+    box-sizing: border-box;
+  }
+
+  .container-inner {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  /* tighten header and hero on small devices */
+  header {
+    padding: .5rem .6rem;
+  }
+
+  .hero {
+    padding: 0.75rem .6rem;
+  }
+
+  /* slightly reduce card internal padding while keeping readable spacing */
+  .card {
+    padding: .9rem;
+  }
+
+  .subcard {
+    padding: .7rem;
+  }
+}
+@media (max-width: 420px) {
+  header h1 { font-size: 1.05rem; }
+  .page-title { font-size: 1.4rem; }
+  .lead { font-size: .95rem; }
+}
