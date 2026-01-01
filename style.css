@@ -24,7 +24,7 @@
 *{ box-sizing: border-box; margin:0; padding:0; }
 html, body { height: 100%; }
 body {
-  background-image: url('images/mountain_background.jpg');
+  background-image: url('images/mountain_background2.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -264,6 +264,17 @@ footer a:focus {
   box-shadow: 0 2px 6px rgba(0,0,0,0.12);
   background: #fff;                /* small white background ensures image visibility */
   padding: 4px;
+}
+
+/* Headshot used on the bio page */
+.headshot {
+  width: 220px;
+  max-width: 40%;
+  height: auto;
+  border-radius: 50%;
+  box-shadow: 0 6px 20px rgba(37,99,235,0.12);
+  display: block;
+  margin: 0 auto 1.25rem auto;
 }
 
 /* small screens — keep spacing readable */
