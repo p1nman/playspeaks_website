@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Celeste Inman, LLC</title>
+    <meta name="description" content="Counseling and play therapy for children, teens, families, and women in San Antonio with Celeste Inman, MEd, LPC-S, RPT-S.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css"/>
     <!-- Open Graph / Social image -->
     <meta property="og:title" content="Celeste Inman, LLC">
@@ -15,48 +19,148 @@
 </head>
 <body>
     <header>
-        <nav>
-            <a href="index.html" aria-current="page">Home</a>
-            <a href="bio.html">About</a>
-            <a href="services.html">Services</a>
-            <a href="fees.html">Fees</a>
-        </nav>
+        <div class="wrap header-inner">
+            <a class="brand" href="index.html">Celeste Inman <span>Counseling</span></a>
+            <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <nav id="site-nav" aria-label="Main">
+                <a href="index.html" aria-current="page">Home</a>
+                <a href="bio.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="office.html">Office</a>
+                <a href="fees.html">Fees</a>
+                <a class="nav-cta" href="mailto:contact@playspeaks.com">Contact</a>
+            </nav>
+        </div>
     </header>
 
-    <section class="hero">
-        <div class="hero-content">
-          <div class="container-inner"></div>
-            <h1 class="page-title">Celeste Inman, LLC</h1>
-            <article class="card">
-              <p class="subtitle">Counseling</p>
-              <div class="content">
-                  <p>From a distance, mountains appear beautiful — strong, steady, and full of promise. But when we’re standing in the middle of them, the experience can feel very different. Up close, the climb can be exhausting. The path can feel unclear. And even though we try to appear confident, strong, and put-together, inside we may be overwhelmed, anxious, or hurting.</p>
-                  <p>In many ways, life’s struggles and the weight of past trauma can feel just like that — like standing in a vast mountain range without a clear way through.</p>
-                  <blockquote>
-                      “Every valley shall be exalted and every mountain and hill brought low; the crooked shall be made straight and the rough places smooth; the glory of the Lord shall be revealed, and all flesh shall see it together.” Isaiah 40:4-5
-                  </blockquote>
-                  <p>If you’re feeling lost in the valley or weary from the climb, you don’t have to walk this path alone.</p>
-                  <p>Hi, I’m Celeste. It would be an honor to walk alongside you or your child. Together, we can gently uncover the root of what you’re experiencing, process and heal from what has hurt you, and learn practical ways to manage overwhelming emotions. My hope is that over time, the mountain won’t feel quite so daunting — and that you’ll begin to see your own strength, resilience, and the beauty emerging from your journey.</p>
-              </div>
-            </article>
-          </div>  
-        </div>
-    </section>
+    <main>
+        <section class="hero">
+            <div class="wrap">
+                <div class="hero-content">
+                    <p class="eyebrow">Celeste Inman, LLC &middot; Counseling</p>
+                    <h1>Finding a way through the mountains.</h1>
+                    <p class="tagline">It would be an honor to walk alongside you or your child.</p>
+                    <div class="actions">
+                        <a class="btn btn-primary" href="mailto:contact@playspeaks.com">Reach out</a>
+                        <a class="btn btn-ghost" href="bio.html">Meet Celeste</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--tight">
+            <div class="wrap split">
+                <div>
+                    <h2>When you&rsquo;re standing in the middle of the climb</h2>
+                </div>
+                <div class="prose">
+                    <p>From a distance, mountains appear beautiful — strong, steady, and full of promise. But when we’re standing in the middle of them, the experience can feel very different. Up close, the climb can be exhausting. The path can feel unclear. And even though we try to appear confident, strong, and put-together, inside we may be overwhelmed, anxious, or hurting.</p>
+                    <p>In many ways, life’s struggles and the weight of past trauma can feel just like that — like standing in a vast mountain range without a clear way through.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="verse-band">
+            <div class="wrap">
+                <blockquote>
+                    “Every valley shall be exalted and every mountain and hill brought low; the crooked shall be made straight and the rough places smooth; the glory of the Lord shall be revealed, and all flesh shall see it together.”
+                    <cite>Isaiah 40:4-5</cite>
+                </blockquote>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="wrap split split--media-first">
+                <div class="portrait-wrap">
+                    <div class="portrait">
+                        <img src="images/2025_Headshot.jpeg" alt="Celeste Inman smiling outdoors" loading="lazy">
+                    </div>
+                </div>
+                <div class="prose">
+                    <p class="eyebrow">Meet Celeste</p>
+                    <h2>A companion for the climb</h2>
+                    <p class="section-lead">If you’re feeling lost in the valley or weary from the climb, you don’t have to walk this path alone.</p>
+                    <p>Hi, I’m Celeste. It would be an honor to walk alongside you or your child. Together, we can gently uncover the root of what you’re experiencing, process and heal from what has hurt you, and learn practical ways to manage overwhelming emotions. My hope is that over time, the mountain won’t feel quite so daunting — and that you’ll begin to see your own strength, resilience, and the beauty emerging from your journey.</p>
+                    <div class="actions" style="margin-top:2rem">
+                        <a class="btn btn-outline" href="bio.html">More about Celeste</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--stone">
+            <div class="wrap">
+                <div class="center prose">
+                    <p class="eyebrow">How I can help</p>
+                    <h2>Services</h2>
+                    <p class="section-lead">Individual, family, and play-based approaches tailored to children, adolescents, and adults.</p>
+                </div>
+                <div class="card-grid">
+                    <a class="card" href="services.html#play-therapy">
+                        <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/><path d="M12 3l4.5 7.5h-9z"/></svg></span>
+                        <h3>Play Therapy</h3>
+                        <p>Play is a child’s natural language — a safe way for children and teens to express thoughts and make sense of big emotions.</p>
+                        <span class="more">Learn more &rarr;</span>
+                    </a>
+                    <a class="card" href="services.html#parents">
+                        <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><circle cx="12" cy="14" r="2"/></svg></span>
+                        <h3>Parents &amp; Families</h3>
+                        <p>Practical, personalized strategies for your child, parenting strategies, and/or family therapy to rebuild communication and connection.</p>
+                        <span class="more">Learn more &rarr;</span>
+                    </a>
+                    <a class="card" href="services.html#adult-women">
+                        <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19C5 10 11 5 20 4c-1 9-6 15-15 15z"/><path d="M5 19l8-8"/></svg></span>
+                        <h3>Adult Women</h3>
+                        <p>Support for women navigating relationships, transitions, trauma, and identity. Faith-based counseling available upon request.</p>
+                        <span class="more">Learn more &rarr;</span>
+                    </a>
+                    <a class="card" href="services.html#collaborative-divorce">
+                        <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="12" r="5.5"/><circle cx="15" cy="12" r="5.5"/></svg></span>
+                        <h3>Collaborative Divorce</h3>
+                        <p>Serving as a Child Specialist so children have a voice and are supported throughout the process.</p>
+                        <span class="more">Learn more &rarr;</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-band">
+            <div class="wrap">
+                <h2>Ready to take the first step?</h2>
+                <p>Reach out with questions or to schedule an initial intake session.</p>
+                <div class="actions">
+                    <a class="btn btn-primary" href="mailto:contact@playspeaks.com">contact@playspeaks.com</a>
+                    <a class="btn btn-ghost" href="tel:+12106022203">(210) 602-2203</a>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer>
-        <div style="display:flex;gap:1rem;justify-content:center;align-items:center;padding:1rem 0;margin-bottom:0.5rem;flex-wrap:wrap;">
-          <a href="https://www.a4pt.org/" target="_blank" rel="noopener">
-            Association for Play Therapy
-          </a>
-          <a href="https://collaborativedivorcesanantonio.com/" target="_blank" rel="noopener">
-            <img src="images/col_dev.png?text=Collaborative Divorce San Antonio" alt="Collaborative Divorce San Antonio"/>
-          </a>
-          <a href="https://www.pictoday.org/" target="_blank" rel="noopener">
-            <img src="images/pictoday.png?text=PicToday" alt="PicToday"/>
-          </a>
+        <div class="wrap">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">Celeste Inman, LLC</div>
+                    <p>Counseling &middot; North San Antonio<br>Near US-281 &amp; Loop 1604</p>
+                </div>
+                <div class="footer-contact">
+                    <p class="footer-label">Contact</p>
+                    <p><a href="mailto:contact@playspeaks.com">contact@playspeaks.com</a></p>
+                    <p><a href="tel:+12106022203">(210) 602-2203</a></p>
+                </div>
+                <div>
+                    <p class="footer-label">Affiliations</p>
+                    <div class="affiliations">
+                        <a href="https://www.a4pt.org/" target="_blank" rel="noopener">Association for<br>Play Therapy</a>
+                        <a href="https://collaborativedivorcesanantonio.com/" target="_blank" rel="noopener"><img src="images/col_dev.png" alt="Collaborative Divorce San Antonio"></a>
+                        <a href="https://www.pictoday.org/" target="_blank" rel="noopener"><img src="images/pictoday.png" alt="PicToday"></a>
+                    </div>
+                </div>
+            </div>
+            <p class="footer-legal">&copy; 2026 Celeste Inman, LLC &middot; All Rights Reserved</p>
         </div>
-        <p><a href="mailto:contact@playspeaks.com">contact@playspeaks.com</a> | (210) 602-2203</p>
-        <p>&copy; 2025 Celeste Inman, LLC | All Rights Reserved</p>
     </footer>
     <script src="js/header-scroll.js" defer></script>
 </body>
