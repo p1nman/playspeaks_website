@@ -356,6 +356,21 @@ a.card p { color: var(--muted); font-size: .98rem; flex: 1; }
 @media (max-width: 860px) { .sticky { position: static; } }
 
 .label { font-weight: 800; color: var(--pine); }
+
+/* Explainer video (Services › Play Therapy) */
+.video-card { margin: 1.75rem 0; }
+.video-card video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  background: var(--pine);
+  box-shadow: var(--shadow);
+}
+.video-card figcaption { margin-top: .75rem; font-size: .92rem; color: var(--muted); }
+.video-card details { margin-top: .35rem; }
+.video-card summary { cursor: pointer; font-weight: 700; color: var(--alpenglow-deep); }
+.video-card details p { margin-top: .6rem; }
 .tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; list-style: none; }
 .tags li {
   background: var(--sage-wash);

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Collaborative Divorce v2 (video source)</title>
+<!--
+  Source for video/collaborative-divorce-v2.mp4 (storybook style, matches what-is-play-therapy-v2).
+  Open in a browser to preview (space = pause, drag the bar to scrub). Record with:
+    node video/src/render.mjs collaborative-divorce-v2.html video video/collaborative-divorce-v2.mp4 /path/to/ffmpeg
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&display=block" rel="stylesheet">
+<style>
+  :root { --pine: #1f3a32; --alpenglow: #c0705a; --alpenglow-deep: #a35a45; --dawn: #e9b872; --muted: #5b6760; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #111; overflow: hidden; height: 100%; }
+  #stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: #f1e6d2; transform-origin: 0 0; font-family: 'Fredoka', sans-serif; font-weight: 500; color: var(--pine); }
+  .scene { position: absolute; inset: 0; overflow: hidden; }
+  .scene > svg, .overlay { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+  .t { position: absolute; }
+  .w { display: inline-block; opacity: 0; }
+  .pop { transform-box: fill-box; transform-origin: center bottom; }
+  .popc { transform-box: fill-box; transform-origin: center; }
+  .eyes { transform-box: fill-box; transform-origin: center; }
+  .h1 { font-size: 84px; line-height: 1.18; }
+  .eb { font-weight: 600; font-size: 34px; letter-spacing: .12em; text-transform: uppercase; color: var(--alpenglow); }
+  .sub { font-size: 50px; line-height: 1.35; color: var(--muted); }
+  .center { left: 160px; width: 1600px; text-align: center; }
+  .lite { color: #fff; text-shadow: 0 3px 14px rgba(20,20,30,.3); }
+  .card { position: absolute; top: 360px; width: 480px; height: 520px; padding: 34px 30px; border-radius: 40px; background: #fffdf8; text-align: center; border: 6px solid transparent; box-shadow: 0 14px 34px rgba(58,42,26,.16); }
+  .card svg { width: 300px; height: 230px; }
+  .card h3 { margin-top: 18px; font-size: 58px; font-weight: 600; }
+  .card p { margin-top: 12px; font-size: 38px; line-height: 1.25; color: var(--muted); }
+  .row { position: absolute; left: 300px; display: flex; align-items: center; gap: 40px; }
+  .row .ic { width: 104px; height: 104px; border-radius: 50%; background: #fff; display: grid; place-items: center; flex: none; box-shadow: 0 6px 14px rgba(58,42,26,.18); }
+  .row .ic svg { width: 60px; height: 60px; }
+  .row span.txt { font-size: 56px; font-weight: 600; }
+  .pill { display: inline-block; padding: 24px 50px; border-radius: 999px; font-size: 54px; font-weight: 600; margin: 14px 14px; box-shadow: 0 6px 14px rgba(58,42,26,.16); }
+  #ui { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 16px; background: rgba(0,0,0,.6); display: flex; gap: 12px; align-items: center; color: #fff; font: 14px sans-serif; }
+  #ui input { flex: 1; }
+  body.render #ui { display: none; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="ui"><button id="pp">Pause</button><input id="bar" type="range" min="0" max="80.5" step="0.01" value="0"><span id="clock">0.0s</span></div>
+<script src="characters.js"></script>
+<script src="storybook.js"></script>
+<script>
+const DURATION = 80.5;
+const [therapist, mom, dad, girl] = CAST;
+const atty1 = { kind: 'adult', skin: '#d9a27c', hair: '#2e2a26', hairStyle: 'short', shirt: '#3d4a63', pants: '#2e3445' };
+const atty2 = { kind: 'adult', skin: '#7a4b33', hair: '#1c1410', hairStyle: 'bun', shirt: '#6f8f7c', pants: '#3b3330' };
+
+let html = STORY_DEFS;
+
+// 1. dawn mountains + title (sun on the left, where the family walks at the end)
+html += `<div class="scene" id="s1">${svgW(mountains('m1', '', 540, 540), 'cam1', '')}
+  <div class="t eb center" id="s1a" style="top:160px;color:var(--dawn)">${words('Collaborative Divorce')}</div>
+  <div class="t center lite" id="s1b" style="top:220px;font-size:104px">${words('A gentler path through divorce.')}</div>
+  <div class="t center lite" id="s1c" style="top:370px;font-size:50px;font-weight:600">Out of court &nbsp;·&nbsp; Private &nbsp;·&nbsp; Respectful</div></div>`;
+
+// 2. three paths
+const CARDS = [
+  ['Kitchen table', 'Spouses agree on their own', `<rect x="40" y="140" width="220" height="16" rx="6" fill="#b58a5a"/><rect x="60" y="156" width="14" height="70" fill="#9c7448"/><rect x="226" y="156" width="14" height="70" fill="#9c7448"/>
+    <rect x="80" y="100" width="40" height="40" rx="7" fill="${P.alpen}"/><path d="M120 108 q16 0 16 12 t-16 12" fill="none" stroke="${P.alpen}" stroke-width="6"/><rect x="186" y="100" width="40" height="40" rx="7" fill="${P.dawn}"/><path d="M186 108 q-16 0 -16 12 t16 12" fill="none" stroke="${P.dawn}" stroke-width="6"/>
+    <rect x="128" y="124" width="46" height="16" rx="2" fill="#fff" stroke="#d8cdbb" stroke-width="2"/>
+    <path id="steam0" d="M92 92 q-8 -12 0 -24 t0 -24 M206 92 q-8 -12 0 -24 t0 -24" fill="none" stroke="#b8ad9e" stroke-width="4" stroke-linecap="round"/>`],
+  ['Litigation', 'A judge or jury decides', `<path d="M40 104 L150 44 L260 104Z" fill="${P.dusk}"/><rect x="40" y="104" width="220" height="14" fill="#56627c"/>${[0, 1, 2, 3].map((i) => `<rect x="${66 + i * 46}" y="118" width="22" height="78" fill="#c7ccd8"/>`).join('')}<rect x="30" y="196" width="240" height="18" rx="4" fill="#9aa3b5"/>
+    <g transform="rotate(-30 236 70)"><rect x="210" y="56" width="52" height="26" rx="6" fill="#7a5a3c"/><rect x="232" y="82" width="8" height="40" rx="3" fill="#9c7448"/></g>`],
+  ['Collaborative', 'Out of court, working together', `<ellipse cx="150" cy="150" rx="86" ry="46" fill="#b58a5a"/><ellipse cx="150" cy="146" rx="76" ry="38" fill="#c79b67"/>
+    ${[[70, 110, P.dusk], [118, 88, P.alpen], [182, 88, P.sage], [230, 110, P.dawn]].map(([x, y, c]) => `<path d="M${x - 24} ${y + 40} q24 -36 48 0Z" fill="${c}"/><circle cx="${x}" cy="${y}" r="20" fill="${shade(c, .25)}"/>`).join('')}
+    <path id="hrt2" d="M150 62 s-22-14-22-30 a12 12 0 0 1 22-8 a12 12 0 0 1 22 8 c0 16-22 30-22 30z" fill="${P.alpen}"/>`],
+];
+html += `<div class="scene" id="s2">${svgW(`<circle cx="1490" cy="620" r="460" fill="url(#warm)" id="glow2" opacity="0"/>`, 'cam2')}
+  <div class="t h1 center" id="s2h" style="top:80px;font-size:84px">${words('When couples divorce in Texas,<br>there are a few paths.')}</div>
+  ${CARDS.map(([h, p, art], i) => `<div class="card" id="c${i}" style="left:${170 + i * 560}px"><svg viewBox="0 0 300 230">${art}</svg><h3>${h}</h3><p>${p}</p></div>`).join('')}</div>`;
+
+// 3 + 7. the team around the couple (two copies; the second adds the Child Specialist)
+const ICON = {
+  scales: '<path d="M12 4v16M8 20h8M5 7h14M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/>',
+  heart: '<path d="M4 5h16v11H10l-5 4v-4H4z"/><path d="M12 13.5s-3-1.8-3-4a1.6 1.6 0 0 1 3-.9 1.6 1.6 0 0 1 3 .9c0 2.2-3 4-3 4z"/>',
+  chart: '<path d="M5 20v-8M11 20V5M17 20v-11M3 20h18"/>',
+};
+const CX = 1350, CY = 590;
+const NODES = [
+  { label: ['Child', 'Specialist'], a: -90, cs: true },
+  { label: ['Attorney'], icon: 'scales', a: -18 },
+  { label: ['Financial', 'professional'], icon: 'chart', a: 54 },
+  { label: ['Mental health', 'professional'], icon: 'heart', a: 126 },
+  { label: ['Attorney'], icon: 'scales', a: 198 },
+];
+NODES.forEach((d) => { d.x = CX + Math.cos(d.a * Math.PI / 180) * 330; d.y = CY + Math.sin(d.a * Math.PI / 180) * 330; });
+function team(p) {
+  let s = '';
+  NODES.forEach((d, i) => {
+    if (d.cs) s += `<line id="${p}ln${i}" x1="${CX}" y1="${CY}" x2="${n(d.x)}" y2="${n(d.y)}" stroke="${P.alpen}" stroke-width="9" stroke-linecap="round" stroke-dasharray="2 20" opacity="0"/>`;
+    else s += `<line id="${p}ln${i}" pathLength="1" x1="${CX}" y1="${CY}" x2="${n(d.x)}" y2="${n(d.y)}" stroke="rgba(47,84,70,.4)" stroke-width="7" stroke-linecap="round" stroke-dasharray="1 1" stroke-dashoffset="1"/>`;
+  });
+  NODES.slice(1).forEach((d, i) => (s += `<line id="${p}lk${i}" x1="${n(NODES[0].x)}" y1="${n(NODES[0].y)}" x2="${n(d.x)}" y2="${n(d.y)}" stroke="${P.alpen}" stroke-width="5" stroke-linecap="round" opacity="0"/>`));
+  s += `<clipPath id="${p}hc"><circle cx="${CX}" cy="${CY}" r="150"/></clipPath><g id="${p}hub" class="popc"${SH}><circle cx="${CX}" cy="${CY}" r="150" fill="#fffdf8"/><g clip-path="url(#${p}hc)"><circle cx="${CX}" cy="${CY + 40}" r="150" fill="url(#warm)"/>
+    <g transform="translate(${CX - 58} ${CY + 112})">${person(mom, 220, undefined, `${p}m`)}</g><g transform="translate(${CX + 58} ${CY + 112})">${person(dad, 236, undefined, `${p}d`)}</g>
+    <g transform="translate(${CX} ${CY + 126})"><g id="${p}kid" class="pop">${person(girl, 130, undefined, `${p}k`)}</g></g></g></g>`;
+  NODES.forEach((d, i) => {
+    const lab = (y, col) => `<text x="${n(d.x)}" y="${n(y)}" text-anchor="middle" font-family="Fredoka" font-weight="600" font-size="36" fill="${col}">${d.label.map((l, j) => `<tspan x="${n(d.x)}" dy="${j ? 40 : 0}">${l}</tspan>`).join('')}</text>`;
+    if (d.cs) {
+      s += `<circle id="${p}ring" cx="${n(d.x)}" cy="${n(d.y)}" r="96" fill="none" stroke="${P.alpen}" stroke-width="5" opacity="0"/>
+        <g id="${p}nd${i}" class="popc"><clipPath id="${p}cc"><circle cx="${n(d.x)}" cy="${n(d.y)}" r="80"/></clipPath><g${SH}><circle cx="${n(d.x)}" cy="${n(d.y)}" r="80" fill="#fbeee7" stroke="${P.alpen}" stroke-width="6"/></g>
+        <g clip-path="url(#${p}cc)"><g transform="translate(${n(d.x)} ${n(d.y + 300)})">${person(therapist, 340, undefined, `${p}cs`)}</g></g>${lab(d.y - 150, P.alpenDeep)}</g>`;
+    } else {
+      s += `<g id="${p}nd${i}" class="popc"><g${SH}><circle cx="${n(d.x)}" cy="${n(d.y)}" r="68" fill="#fff"/></g><g transform="translate(${n(d.x - 36)} ${n(d.y - 36)}) scale(3)" fill="none" stroke="${P.pineSoft}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICON[d.icon]}</g>${lab(d.y + 112, P.pine)}</g>`;
+    }
+  });
+  return s;
+}
+html += `<div class="scene" id="s3">${svgW(team('t3'), 'cam3')}
+  <div class="t eb" id="s3e" style="left:110px;top:330px">${words('How it works')}</div>
+  <div class="t h1" id="s3a" style="left:110px;top:390px;width:740px;font-size:76px">${words('A team of professionals works with both spouses — outside the courtroom.')}</div></div>`;
+
+// 4. the couple stays in control
+const PILLS = ['Out of court', 'Private', 'Respectful', 'Customized to your family'];
+const pillStyles = [['#fff', P.pine], ['#f4e3d6', P.alpenDeep], ['#f6ead0', '#8a6420']];
+html += `<div class="scene" id="s4">${svgW(pg('m4', mom, 190, 1010, 400) + pg('d4', dad, 1730, 1010, 430), 'cam4')}
+  <div class="t h1 center" id="s4h" style="top:140px;font-size:92px">${words('The couple stays in control<br>of the decisions.')}</div>
+  <div class="t center" id="pills" style="top:420px;left:320px;width:1280px">${PILLS.map((p, i) => `<span class="pill" style="background:${pillStyles[i % 3][0]};color:${pillStyles[i % 3][1]}">${p}</span>`).join('')}</div>
+  <div class="t sub center" id="s4b" style="top:720px;left:400px;width:1120px">${words('Many families find it leads to healthier co-parenting — and less emotional harm for their children.')}</div></div>`;
+
+// 5. children aren't in the room
+html += `<div class="scene" id="s5">${svgW(`<rect x="0" y="960" width="1920" height="120" fill="#e6d6bd"/>
+  <g${SH}><rect x="170" y="330" width="1090" height="630" rx="34" fill="#fffaf1"/></g><rect x="300" y="420" width="250" height="170" rx="10" fill="url(#mSky)"/><path d="M300 590 L360 520 L410 555 L470 500 L550 560 V590Z" fill="#4f5a72"/>
+  <g id="adults5">${pg('a50', mom, 380, 950, 400) + pg('a51', atty1, 600, 950, 420) + pg('a52', atty2, 830, 950, 400) + pg('a53', dad, 1050, 950, 430)}
+  <rect x="250" y="755" width="930" height="36" rx="10" fill="#b58a5a"/><rect x="270" y="791" width="890" height="169" fill="#a47a4c"/><path d="M300 830 H1130" stroke="#946b40" stroke-width="4"/></g>
+  <rect x="1300" y="470" width="190" height="490" fill="#e8dcc8" stroke="#8a6a48" stroke-width="16"/><path d="M1308 478 L1400 500 L1400 940 L1308 952Z" fill="#c9a46e"/><circle cx="1385" cy="720" r="8" fill="#7a5a3c"/>
+  <circle id="glow5" cx="1680" cy="760" r="300" fill="url(#warm)" opacity="0"/>` + pg('k5', girl, 1680, 965, 330), 'cam5')}
+  <div class="t h1 center" id="s5a" style="top:70px;font-size:80px">${words('Children are deeply affected by divorce…')}</div>
+  <div class="t h1 center" id="s5b" style="top:175px;font-size:66px;color:var(--alpenglow-deep)">${words('…but they aren’t in the room where decisions are made.')}</div></div>`;
+
+// 6. NEW: a voice, not a vote
+const ballot = (i) => `<g id="bal${i}" opacity="0"><rect x="-36" y="-22" width="72" height="44" rx="5" fill="#fff" stroke="#d8cdbb" stroke-width="2"/><path d="M-14 0 l8 8 l16 -16" fill="none" stroke="${P.pineSoft}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+html += `<div class="scene" id="s6">${svgW(`<rect x="0" y="935" width="1920" height="145" fill="#e6d6bd"/><circle id="glow6" cx="1040" cy="600" r="380" fill="url(#warm)" opacity="0"/>
+  <g id="box6">${[0, 1, 2].map(ballot).join('')}
+    <g${SH}><path d="M540 700 L580 660 L840 660 L800 700Z" fill="#e0c08d"/><path d="M800 700 L840 660 L840 890 L800 930Z" fill="#b08a55"/><rect x="540" y="700" width="260" height="230" rx="8" fill="#c9a46e"/></g>
+    <path d="M630 682 L730 682" stroke="#3b3330" stroke-width="10" stroke-linecap="round"/>
+    <text x="670" y="830" text-anchor="middle" font-family="Fredoka" font-weight="600" font-size="60" fill="#fff">VOTE</text><path d="M620 868 H720" stroke="rgba(255,255,255,.6)" stroke-width="6" stroke-linecap="round"/></g>` +
+  pg('k6', girl, 1040, 935, 330) + pg('th6', therapist, 1400, 940, 500) +
+  `<g transform="translate(1040 520)"><g id="vb6" class="pop"${SH}><rect x="-62" y="-50" width="124" height="92" rx="30" fill="#fff"/><path d="M-12 40 L0 62 L12 40Z" fill="#fff"/><path d="M0 18 s-26-16-26-34 a14 14 0 0 1 26-9 a14 14 0 0 1 26 9 c0 18-26 34-26 34z" fill="${P.alpen}"/></g></g>
+  ${[0, 1, 2].map((i) => `<path id="arc${i}" d="M${1130 + i * 34} ${470 - i * 10} q${22 + i * 6} ${40 + i * 10} 0 ${80 + i * 20}" fill="none" stroke="${P.alpen}" stroke-width="7" stroke-linecap="round" opacity="0"/>`).join('')}`, 'cam6')}
+  <div class="t h1 center" id="s6a" style="top:70px;font-size:84px">${words('Children don’t get a vote in the divorce…')}</div>
+  <div class="t h1 center" id="s6b" style="top:180px;font-size:92px;color:var(--alpenglow-deep)">${words('…but they deserve a voice.')}</div>
+  <div class="t center" id="s6c" style="top:965px;font-size:56px;font-weight:600">${words('The Child Specialist makes sure they’re heard.')}</div></div>`;
+
+// 7. the Child Specialist joins the team
+html += `<div class="scene" id="s7">${svgW(team('t7'), 'cam7')}
+  <div class="t eb" id="s7e" style="left:110px;top:300px">${words('The Child Specialist')}</div>
+  <div class="t h1" id="s7a" style="left:110px;top:360px;width:720px;font-size:76px">${words('Joins the team to keep children’s needs at the center.')}</div>
+  <div class="t sub" id="s7b" style="left:110px;top:650px;width:700px">${words('A mental health professional who specializes in children.')}</div></div>`;
+
+// 8. what the Child Specialist does
+const ROWS = [
+  ['Gives children a safe space to share feelings', '<path pathLength="1" d="M4 5h16v11H10l-5 4v-4H4z"/><path pathLength="1" d="M12 13.5s-3-1.8-3-4a1.6 1.6 0 0 1 3-.9 1.6 1.6 0 0 1 3 .9c0 2.2-3 4-3 4z"/>'],
+  ['Listens in age-appropriate ways', '<circle pathLength="1" cx="12" cy="7" r="3"/><path pathLength="1" d="M7 21v-5a5 5 0 0 1 10 0v5"/>'],
+  ['Shares what children need with parents and the team', '<path pathLength="1" d="M4 12h13M13 7l5 5-5 5"/>'],
+  ['Supports their long-term well-being', '<path pathLength="1" d="M5 19C5 10 11 5 20 4c-1 9-6 15-15 15z"/><path pathLength="1" d="M5 19l8-8"/>'],
+];
+html += `<div class="scene" id="s8">${svgW(garland(41, { maxLen: 190 }) + fallLeaves('lf8_', 6, 42), 'cam8')}
+  <div class="t eb center" id="s8e" style="top:230px">${words('The Child Specialist')}</div>
+  <div class="t h1 center" id="s8h" style="top:280px;font-size:88px">${words('What the Child Specialist does')}</div>
+  ${ROWS.map(([txt, ic], i) => `<div class="t row" style="top:${450 + i * 135}px"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="${P.alpenDeep}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" stroke-dashoffset="1">${ic}</svg></span><span class="txt">${txt}</span></div>`).join('')}</div>`;
+
+// 9. a family walking forward together
+html += `<div class="scene" id="s9">${svgW(mountains('m9',
+  `<path id="trail" d="M1500 1010 C1300 990 1380 930 1160 905 S860 860 980 812 S820 752 700 730 S820 650 700 606 S600 520 540 470" fill="none" stroke="#f3d59b" stroke-width="10" stroke-linecap="round"/>
+   ${[[dad, 100], [girl, 72], [mom, 94]].map(([c, H], i) => `<g id="wk${i}"${SH}><g id="wkIn${i}">${person(c, H)}</g></g>`).join('')}`, 540, 540), 'cam9', '')}
+  <div class="t center lite" id="s9a" style="top:80px;font-size:96px">${words('Helping families move forward —<br>together, as co-parents.')}</div></div>`;
+
+// 10. end card
+html += `<div class="scene" id="s10">${svgW(`<circle cx="960" cy="480" r="700" fill="url(#warm)" opacity=".25"/><path d="M0 860 L260 760 L520 840 L800 740 L1080 850 L1360 770 L1640 850 L1920 790 V1080 H0Z" fill="${P.pineSoft}" filter="url(#ridge)"/><path d="M0 940 L300 860 L560 930 L820 870 L1080 950 L1360 880 L1640 950 L1920 900 V1080 H0Z" fill="#142722" filter="url(#ridge)"/>` + garland(51, { maxLen: 230, lights: 60 }), 'cam10', P.pine)}
+  <div class="t eb center" id="s10e" style="top:290px;color:var(--dawn)">${words('Collaborative Divorce')}</div>
+  <div class="t center" id="s10a" style="top:345px;font-size:136px;color:#fff">${words('Celeste Inman')}</div>
+  <div class="t center" id="s10b" style="top:535px;font-size:48px;font-weight:600;letter-spacing:.1em;color:var(--dawn)">MEd, LPC-S, RPT-S</div>
+  <div class="t center" id="s10c" style="top:612px;font-size:44px;color:rgba(255,255,255,.85)">Child Specialist &amp; Mental Health Professional</div>
+  <div class="t center" id="s10d" style="top:720px;font-size:54px;color:#fff">playspeaks.com &nbsp;·&nbsp; (210) 602-2203</div></div>`;
+
+html += storyOverlays();
+$('stage').innerHTML = html;
+initStory();
+const FALL = [...document.querySelectorAll('[id^="lf8_"]')].map((e) => ({ e, x: +e.dataset.x, ph: +e.dataset.ph, sp: +e.dataset.sp }));
+
+function teamIn(p, t, a) {
+  const hp = prog(t, a, 0.9); $(`${p}hub`).style.opacity = clamp(hp * 3).toFixed(3); $(`${p}hub`).style.transform = `scale(${easeBack(hp).toFixed(3)})`;
+  NODES.forEach((d, i) => {
+    if (d.cs) { $(`${p}nd${i}`).style.opacity = 0; return; }
+    const b = a + 1 + (i - 1) * 0.5;
+    $(`${p}ln${i}`).style.strokeDashoffset = (1 - easeInOut(prog(t, b, 0.6))).toFixed(3);
+    const q = prog(t, b + 0.3, 0.7); $(`${p}nd${i}`).style.opacity = clamp(q * 3).toFixed(3); $(`${p}nd${i}`).style.transform = `scale(${easeBack(q).toFixed(3)})`;
+  });
+}
+function teamShown(p) {
+  $(`${p}hub`).style.opacity = 1; $(`${p}hub`).style.transform = 'none';
+  NODES.forEach((d, i) => { if (d.cs) return; $(`${p}ln${i}`).style.strokeDashoffset = 0; $(`${p}nd${i}`).style.opacity = 1; $(`${p}nd${i}`).style.transform = 'none'; });
+}
+function teamBlinks(p, t) { blink(`${p}m`, t, 0.5); blink(`${p}d`, t, 1.9); blink(`${p}k`, t, 2.8); }
+
+// ---------- timeline ----------
+function renderAt(t) {
+  // 1. title (0 – 7.2)
+  if (scene($('s1'), t, -1, 7.2)) {
+    animateMountains('m1', t, 0);
+    $('m1sun').style.transform = `translateY(${((1 - easeOut(prog(t, 0, 5))) * 140).toFixed(1)}px)`;
+    cam($('cam1'), t, 0, 7.2, [960, 540, 1], [900, 600, 1.07], (x) => x);
+    reveal($('s1a'), t, 1.0, null, 0.12); reveal($('s1b'), t, 1.5, null, 0.11); show($('s1c'), t, 3.6, null);
+  }
+  // 2. three paths (7 – 17)
+  if (scene($('s2'), t, 7, 17)) {
+    reveal($('s2h'), t, 7.4, null, 0.06);
+    const h = easeInOut(prog(t, 13.2, 1));
+    CARDS.forEach((_, i) => {
+      const c = $(`c${i}`), k = prog(t, 9.4 + i * 0.6, 1.1);
+      c.style.opacity = (clamp(k * 4) * (i === 2 ? 1 : 1 - 0.55 * h)).toFixed(3);
+      const lift = i === 2 ? -18 * h : 0, sc = i === 2 ? 1 + 0.06 * h : 1 - 0.04 * h;
+      c.style.transform = `translateY(${(420 * (1 - spring(k)) + lift).toFixed(1)}px) rotate(${((1 - spring(k)) * (i - 1) * 8).toFixed(2)}deg) scale(${sc.toFixed(3)})`;
+      if (i === 2) { c.style.borderColor = `rgba(192,112,90,${h.toFixed(3)})`; c.style.boxShadow = `0 ${14 + 16 * h}px ${34 + 30 * h}px rgba(58,42,26,${(0.16 + 0.12 * h).toFixed(3)})`; }
+    });
+    $('glow2').setAttribute('opacity', (h * (0.8 + 0.2 * Math.sin(t * 2.5))).toFixed(3));
+    $('steam0').style.opacity = (0.5 + 0.5 * Math.sin(t * 3)).toFixed(3);
+    $('hrt2').style.transformBox = 'fill-box'; $('hrt2').style.transformOrigin = 'center';
+    $('hrt2').style.transform = `scale(${(1 + 0.12 * h * Math.max(0, Math.sin(t * 5)) ** 6).toFixed(3)})`;
+    cam($('cam2'), t, 7, 10, [960, 540, 1], [1100, 560, 1.04], (x) => x);
+  }
+  // 3. the team (16.8 – 26.4)
+  if (scene($('s3'), t, 16.8, 26.4)) {
+    reveal($('s3e'), t, 17.2, null, 0.1); reveal($('s3a'), t, 17.5);
+    teamIn('t3', t, 18); teamBlinks('t3', t);
+    cam($('cam3'), t, 16.8, 9.6, [960, 540, 1], [1000, 560, 1.04], (x) => x);
+  }
+  // 4. in control (26.2 – 34.4)
+  if (scene($('s4'), t, 26.2, 34.4)) {
+    reveal($('s4h'), t, 26.6, null, 0.06);
+    [...$('pills').children].forEach((p, i) => { const k = prog(t, 28 + i * 0.3, 1.2); p.style.opacity = clamp(k * 4).toFixed(3); p.style.transform = `translateY(${(420 * (1 - spring(k)) + Math.sin(t * 1.6 + i) * 4).toFixed(1)}px)`; });
+    pop('m4', t, 27.0); pop('d4', t, 27.3); blink('m4', t, 0.6); blink('d4', t, 2.1);
+    tilt('m4', 4 * easeInOut(prog(t, 29, 1))); tilt('d4', -4 * easeInOut(prog(t, 29.2, 1)));
+    reveal($('s4b'), t, 30.4, null, 0.05);
+    cam($('cam4'), t, 26.2, 8.2, [960, 540, 1], [960, 560, 1.03], (x) => x);
+  }
+  // 5. children (34.2 – 42.2)
+  if (scene($('s5'), t, 34.2, 42.2, 0.4)) {
+    reveal($('s5a'), t, 34.6); reveal($('s5b'), t, 36.6, null, 0.06);
+    ['a50', 'a51', 'a52', 'a53'].forEach((id, i) => { pop(id, t, 35 + i * 0.2); blink(id, t, i * 0.9); });
+    pop('k5', t, 35.9); blink('k5', t, 1.4);
+    const dim = easeInOut(prog(t, 38, 1.2));
+    $('adults5').style.opacity = (1 - 0.6 * dim).toFixed(3);
+    $('glow5').setAttribute('opacity', (dim * (0.85 + 0.15 * Math.sin(t * 3))).toFixed(3));
+    tilt('k5', -6 * dim);
+    cam($('cam5'), t, 34.2, 8, [960, 540, 1], [1300, 600, 1.12], easeInOut);
+  }
+  // 6. a voice, not a vote (42 – 51.2)
+  if (scene($('s6'), t, 42, 51.2, 0.3)) {
+    reveal($('s6a'), t, 42.6);
+    for (let i = 0; i < 3; i++) {
+      const p = prog(t, 43.0 + i * 0.55, 0.7), b = $(`bal${i}`);
+      b.setAttribute('opacity', (p > 0 && p < 1 ? 1 : 0));
+      b.setAttribute('transform', `translate(${670 + (i - 1) * 20} ${(380 + 300 * easeInOut(p)).toFixed(1)}) rotate(${((1 - p) * (i - 1) * 25).toFixed(1)})`);
+    }
+    pop('k6', t, 42.8); blink('k6', t, 0.8); blink('th6', t, 2.2);
+    $('box6').style.opacity = (1 - 0.55 * easeInOut(prog(t, 45.2, 0.8))).toFixed(3);
+    reveal($('s6b'), t, 45.4, null, 0.1);
+    pop('vb6', t, 45.7, 0.7);
+    $('glow6').setAttribute('opacity', (easeOut(prog(t, 45.7, 1)) * (0.85 + 0.15 * Math.sin(t * 3))).toFixed(3));
+    tilt('k6', -5 * easeInOut(prog(t, 45.7, 0.6)));
+    reveal($('s6c'), t, 47.4, null, 0.06);
+    pop('th6', t, 47.6); tilt('th6', -9 * easeInOut(prog(t, 48.2, 0.8)) + Math.sin(t * 2.6) * 2 * prog(t, 49, 1));
+    for (let i = 0; i < 3; i++) $(`arc${i}`).setAttribute('opacity', (prog(t, 48.4, 0.5) * (0.25 + 0.75 * Math.max(0, Math.sin(t * 4 - i * 0.9)))).toFixed(3));
+    cam($('cam6'), t, 42, 9.2, [960, 540, 1], [1000, 560, 1.05], (x) => x);
+  }
+  // 7. the Child Specialist joins the team (51 – 59.8)
+  if (scene($('s7'), t, 51, 59.8, 0.3)) {
+    teamShown('t7'); teamBlinks('t7', t); blink('t7cs', t, 1.2);
+    const cs = prog(t, 52.2, 1);
+    $('t7nd0').style.opacity = clamp(cs * 3).toFixed(3); $('t7nd0').style.transform = `scale(${easeBack(cs).toFixed(3)})`;
+    $('t7ln0').setAttribute('opacity', cs.toFixed(3)); $('t7ln0').style.strokeDashoffset = (-t * 40).toFixed(1);
+    $('t7ring').setAttribute('opacity', (cs * (0.3 + 0.35 * Math.sin(t * 3))).toFixed(3)); $('t7ring').setAttribute('r', (96 + 8 * Math.sin(t * 3)).toFixed(1));
+    $('t7kid').style.transform = `scale(${(1 + 0.18 * easeInOut(prog(t, 52.6, 1))).toFixed(3)})`;
+    for (let i = 0; i < 4; i++) $(`t7lk${i}`).setAttribute('opacity', (0.75 * easeOut(prog(t, 55.2 + i * 0.3, 0.7))).toFixed(3));
+    reveal($('s7e'), t, 51.4, null, 0.1); reveal($('s7a'), t, 51.7); reveal($('s7b'), t, 53.6, null, 0.05);
+    cam($('cam7'), t, 51, 8.8, [1350, 300, 1.25], [1000, 560, 1.02]);
+  }
+  // 8. what the Child Specialist does (59.6 – 68)
+  if (scene($('s8'), t, 59.6, 68, 0.3)) {
+    reveal($('s8e'), t, 59.9, null, 0.1); reveal($('s8h'), t, 60.2);
+    document.querySelectorAll('#s8 .row').forEach((r, i) => {
+      const a = 61.2 + i * 0.9; show(r, t, a, null);
+      r.style.transform = `translateX(${((1 - easeOut(prog(t, a, .8))) * -60).toFixed(1)}px)`;
+      r.querySelectorAll('[pathLength]').forEach((p) => (p.style.strokeDashoffset = (1 - easeInOut(prog(t, a + 0.2, 0.9))).toFixed(3)));
+    });
+    for (const f of FALL) { const y = ((t - 59.6) * f.sp + f.ph * 60) % 1300 - 100; f.e.setAttribute('transform', `translate(${(f.x + Math.sin(t + f.ph) * 60).toFixed(1)} ${y.toFixed(1)}) rotate(${(t * 40 + f.ph * 36).toFixed(1)}) scale(2.4)`); }
+    cam($('cam8'), t, 59.6, 8.4, [960, 540, 1], [960, 540, 1.03], (x) => x);
+  }
+  // 9. moving forward together (67.8 – 74.6)
+  if (scene($('s9'), t, 67.8, 74.6, 0.7)) {
+    animateMountains('m9', t, 67.8);
+    $('m9sky2').setAttribute('opacity', (0.85 * easeInOut(prog(t, 68.4, 5.5))).toFixed(3));
+    $('m9sun').style.transform = `translateY(${((1 - easeOut(prog(t, 67.8, 6))) * 90 - 60 * prog(t, 69.4, 5)).toFixed(1)}px)`;
+    const trail = $('trail'), tp = easeInOut(prog(t, 68.6, 4.6));
+    draw(trail, tp);
+    [0, 0.05, 0.1].forEach((lag, i) => {
+      const q = clamp(tp - lag), pt = trail.getPointAtLength(trail._len * q);
+      $(`wk${i}`).setAttribute('transform', `translate(${pt.x.toFixed(1)} ${(pt.y + 4).toFixed(1)})`);
+      $(`wkIn${i}`).setAttribute('transform', `translate(0 ${(-Math.abs(Math.sin(t * 9 + i)) * 5 * (q > 0 && q < 1)).toFixed(1)})`);
+      $(`wk${i}`).style.opacity = clamp(prog(t, 68.6 + i * 0.25, .4)).toFixed(3);
+    });
+    cam($('cam9'), t, 67.8, 6.8, [960, 540, 1.02], [860, 520, 1.1], (x) => x);
+    reveal($('s9a'), t, 68.3, null, 0.08);
+  }
+  // 10. end card (74.4 – 80.5)
+  if (scene($('s10'), t, 74.4, 99)) {
+    reveal($('s10e'), t, 74.8, null, 0.1); reveal($('s10a'), t, 75.1, null, 0.15);
+    show($('s10b'), t, 75.9, null); show($('s10c'), t, 76.3, null); show($('s10d'), t, 77.0, null);
+    cam($('cam10'), t, 74.4, 6.1, [960, 540, 1.04], [960, 540, 1], (x) => x);
+  }
+  ambient(t);
+  if (!leafSweep(t, 41.4) && !leafSweep(t, 59.0)) $('leafFx').style.display = 'none';
+}
+startPlayer();
+</script>
+</body>
+</html>
